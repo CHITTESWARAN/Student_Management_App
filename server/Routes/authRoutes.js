@@ -13,7 +13,7 @@ router.post("/login",login)
 
 router.post("/logout",logout)
 
-router.get("/check",protectRoute,checkAuth) 
+router.get("/check",checkAuth) 
 
 
 

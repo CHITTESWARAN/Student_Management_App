@@ -138,7 +138,7 @@ export const checkAuth=async(req,res)=>{
 export const createstudent = async (req, res) => {
   const { fullName, dob, gender, email, phone, address, studentClass, rollNumber, guardianName, year } = req.body;
   
-  // Ensure the file is provided
+  
   const profilePicture = req.file;
   if (!profilePicture) {
     return res.status(400).json('Profile picture is required');
@@ -148,13 +148,12 @@ export const createstudent = async (req, res) => {
   
 
     try {
-      // Upload the file to Cloudinary
       const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path, {
-        folder: 'students_profiles', // Optional: Specify the folder name on Cloudinary
-        public_id: `${Date.now()}-${req.file.originalname}`, // Use timestamp to ensure a unique filename
+        folder: 'students_profiles',
+        public_id: `${Date.now()}-${req.file.originalname}`, 
       });
 
-      // Now, save the student data in the database, including the Cloudinary URL
+     
       const newStudent = new students({
         fullName,
         dob,
@@ -243,7 +242,7 @@ export const updatestudent = async (req, res) => {
 
 export const studentsList = async (req, res) => {
   try {
-    const studentRecords = await students.find({}); // Renamed variable to avoid conflict
+    const studentRecords = await students.find({}); 
 
     res.status(200).json({
       success: true,
