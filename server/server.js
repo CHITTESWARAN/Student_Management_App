@@ -18,9 +18,7 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
-  origin: [
-    "https://student-management-app-1-frontend.onrender.com"
-  ],
+  origin: "https://student-management-app-1-frontend.onrender.com",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
