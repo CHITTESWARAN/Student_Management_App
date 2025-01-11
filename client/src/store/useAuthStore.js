@@ -9,12 +9,10 @@ const BASE_URL = "http://localhost:5001";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
-  updateid:null,
   isSigning: false,
   isLoggingIn: false,
   isUpdatingProfile: false,
   isCheckingAuth: true,
-  setUpdateId: (id) => set({ updateid: id }),
   
 
   // Signup function
@@ -89,6 +87,7 @@ export const useAuthStore = create((set, get) => ({
         set({isCheckingAuth:false})
     }
 },
+
 
 handleUpdate: (id) => {
   

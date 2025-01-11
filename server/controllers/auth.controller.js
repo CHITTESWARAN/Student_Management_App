@@ -9,128 +9,130 @@ import User from "../Models/user.model.js"
 import bcrypt from "bcryptjs"
 import upload from "../lib/multer.js";
 export const signup = async (req, res) => {
-    const { username, email, password, phone, address } = req.body;
-    console.log(username,email,password,phone,address);
-    
+  const { username, email, password, phone, address } = req.body;
+  console.log(username,email,password,phone,address);
   
-    try {
-     
-      if (!username|| !email || !password || !phone || !address) {
-        return res.status(400).json({ message: "All fields are required" });
-      }
-  
-     
-      const user = await User.findOne({ $or: [{ email }, { phone }] });
-      if (user) { 
-        return res.status(400).json({ message: "Email or phone already exists" });
-      }
-  
-     
-      if (password.length < 6) {
-        return res.status(400).json({ message: "Password must be greater than 6 characters" });
-      }
-  
-     
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      
-      const newUser = new User({
-        username,
-        email,
-        phone,
-        address,
-        password: hashedPassword
-      });
-  
-      
-      await newUser.save();
-  
-      
-      const token = generateToken(newUser._id);
-      res.cookie("jwt", token, {
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        httpOnly: true,
-      });
-      
-      res.status(201).json({
-        _id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-        phone: newUser.phone,
-        token: token 
-      });
 
-  
- 
-      
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Something went wrong, please try again later" });
+  try {
+   
+    if (!username|| !email || !password || !phone || !address) {
+      return res.status(400).json({ message: "All fields are required" });
     }
-  };
+
+   
+    const user = await User.findOne({ $or: [{ email }, { phone }] });
+    if (user) { 
+      return res.status(400).json({ message: "Email or phone already exists" });
+    }
+
+   
+    if (password.length < 6) {
+      return res.status(400).json({ message: "Password must be greater than 6 characters" });
+    }
+
+   
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    
+    const newUser = new User({
+      username,
+      email,
+      phone,
+      address,
+      password: hashedPassword
+    });
+
+    
+    await newUser.save();
+
+    
+    const token = generateToken(newUser._id);
+    console.log(token);
+    
+    res.cookie("jwt", token, {
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      httpOnly: true,
+    });
+    
+    res.status(201).json({
+      _id: newUser._id,
+      username: newUser.username,
+      email: newUser.email,
+      phone: newUser.phone,
+      token: token 
+    });
 
 
- 
+
+    
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Something went wrong, please try again later" });
+  }
+};
+
+
+
 
 export const login=async(req,res)=>{
-    const {email,password}=req.body;
+  const {email,password}=req.body;
 
-    try{
-        if(!email ||!password)
-        {
-            return res.status(400).json({message:"Please Enter the valid Details"})
-        }
+  try{
+      if(!email ||!password)
+      {
+          return res.status(400).json({message:"Please Enter the valid Details"})
+      }
 
-        const user= await User.findOne({email});
-        if(!user)
-        {
-            return res.status(400).json({message:"User not found"})
-        }
-        const passwordverify = await bcrypt.compare(password, user.password);
+      const user= await User.findOne({email});
+      if(!user)
+      {
+          return res.status(400).json({message:"User not found"})
+      }
+      const passwordverify = await bcrypt.compare(password, user.password);
 
 
-       if(!passwordverify)
-       {
-         return res.status(400).json({message:"Please Enter the Valid Password"})
-       }
-    
-       const token=generateToken(user._id)
-       res.cookie("jwt",token,{
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        httpOnly: true,
-      });
+     if(!passwordverify)
+     {
+       return res.status(400).json({message:"Please Enter the Valid Password"})
+     }
+  
+     const token=generateToken(user._id)
+     res.cookie("jwt",token,{
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      httpOnly: true,
+    });
 
-      res.status(201).json({message:"Login successful"})
+    res.status(201).json({message:"Login successful"})
 
-    }
-    catch(error)
-    {
-       return res.status(400).json({message:"Internal server a Error"}) 
-    }
+  }
+  catch(error)
+  {
+     return res.status(400).json({message:"Internal server a Error"}) 
+  }
 }
 
 export const logout=async(req,res)=>{
-   
-    try{
-         res.cookie("jwt","",{maxAge:0})
-         return res.status(201).json({message:"Logout successful"})
-    }
-    catch(error)
-    {
-         res.status(400).json({message:"Internal error in the  the logout"})
-    }
+ 
+  try{
+       res.cookie("jwt","",{maxAge:0})
+       return res.status(201).json({message:"Logout successful"})
+  }
+  catch(error)
+  {
+       res.status(400).json({message:"Internal error in the  the logout"})
+  }
 }
 
 
 export const checkAuth=async(req,res)=>{
-    try{
-      res.status(200).json(req.user);
-    }
-    catch(error)
-    {
-      console.log("Error in CheckAuth controller",error.message)
-  res.status(500).json({message:"Internal server Error"})  
-    }
+  try{
+    res.status(200).json(req.user);
+  }
+  catch(error)
+  {
+    console.log("Error in CheckAuth controller",error.message)
+res.status(500).json({message:"Internal server Error"})  
+  }
 }
 
 

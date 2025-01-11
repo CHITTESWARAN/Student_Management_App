@@ -1,6 +1,8 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL: "https://student-management-app-backend-614k.onrender.com/api", 
-    withCredentials: true,
+  baseURL: import.meta.env.MODE === "development"
+    ? "http://localhost:5001/api"
+    : "https://student-management-app-1-frontend.onrender.com/api", 
+  withCredentials: true,
 });
