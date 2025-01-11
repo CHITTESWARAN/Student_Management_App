@@ -8,7 +8,8 @@ import SignupPage from './pages/SignupPage.jsx'
 import { Toaster } from 'react-hot-toast'
 
 import { useStudentStore } from './store/useStudentStore.js'
-import CreateForm from './pages/Createform.jsx'
+import CreateForm from './pages/CreateForm.jsx'
+
 
 
 
