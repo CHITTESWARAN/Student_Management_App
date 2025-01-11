@@ -5,15 +5,12 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-  "dev": "vite",
-  "build": "vite build",
-  "lint": "eslint .",
-  "preview": "vite preview"
-}
-
-    "dev": "nodemon server.js"
-  },
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "dev": "nodemon server.js", 
+  "build": "echo \"No build step defined for backend\"",  
+  "lint": "eslint .", 
+  "start": "node server.js" 
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -17,12 +17,16 @@ const PORT=process.env.PORT;
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-
 app.use(cors({
-  origin: "https://student-management-app-1-frontend.onrender.com",
+  origin: [
+    "http://localhost:5173",
+    "https://student-management-app-1-frontend.onrender.com"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
+
+
 app.use("/api/auth",authRoutes);
 
 
